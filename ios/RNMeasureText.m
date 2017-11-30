@@ -21,7 +21,7 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    if ([options objectForKey:@"width"] == nil) {
+     if ([options objectForKey:@"width"] == nil) {
       reject(@"invalid_width", @"missing required width property", nil);
       return;
     }
@@ -34,6 +34,7 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
       return;
     }
 
+    bool forHeight = [RCTConvert BOOL:options[@"forHeight"]] ?: YES;
     float width = [RCTConvert float:options[@"width"]];
     NSArray *texts = [RCTConvert NSArray:options[@"texts"]];
     CGFloat fontSize = [RCTConvert CGFloat:options[@"fontSize"]];
@@ -55,7 +56,7 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
         (void) [layoutManager glyphRangeForTextContainer:textContainer];
         CGRect resultRect = [layoutManager usedRectForTextContainer:textContainer];
 
-        [results addObject:[NSNumber numberWithFloat:resultRect.size.height]];
+        [results addObject:[NSNumber numberWithFloat:(forHeight ? resultRect.size.height : resultRect.size.width)]];
     }
     resolve(results);
 }

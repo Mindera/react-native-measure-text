@@ -42,6 +42,8 @@ public class RNMeasureTextModule extends ReactContextBaseJavaModule {
       return;
     }
 
+    boolean forHeight = !options.hasKey("forHeight") || options.getBoolean("forHeight");
+    forHeight == null
     int width = Math.round((float)options.getDouble("width"));
     ReadableArray texts = options.getArray("texts");
     float fontSize = (float)options.getDouble("fontSize");
@@ -67,7 +69,7 @@ public class RNMeasureTextModule extends ReactContextBaseJavaModule {
               includePadding
       );
 
-      results.pushDouble((double)layout.getHeight());
+      results.pushDouble((double)(forHeight ? layout.getHeight() : layout.getWidth()));
     }
 
     promise.resolve(results);
